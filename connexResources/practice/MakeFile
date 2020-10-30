@@ -1,7 +1,0 @@
-all: practice
-
-practice: practice.c
-	gcc practice.c -lreadline -lhistory -o practice
-
-clean:
-	-rm -rf *.o *.exe
