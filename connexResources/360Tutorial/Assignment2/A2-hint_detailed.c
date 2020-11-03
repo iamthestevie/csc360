@@ -67,7 +67,7 @@ void * customer_entry(void * cus_info){
 	
 	/* Enqueue operation: get into either business queue or economy queue by using p_myInfo->class_type*/
 	
-	// 2, 3
+	
 	pthread_mutex_lock(/* mutexLock of selected queue */); 
 	{
 		fprintf(stdout, "A customer enters a queue: the queue ID %1d, and length of the queue %2d. \n", /*...*/);
@@ -114,7 +114,6 @@ void * customer_entry(void * cus_info){
 void *clerk_entry(void * clerkNum){
 	
 	while(TRUE){
-		// clerk is idle now
 		
 		/* selected_queue_ID = Select the queue based on the priority and current customers number */
 		
@@ -122,13 +121,13 @@ void *clerk_entry(void * clerkNum){
 		
 		queue_status[selected_queue_ID] = clerkID; // The current clerk (clerkID) is signaling this queue
 		
-		pthread_cond_broadcast(/* cond_var of the selected queue */); // Awake the customer (the one enter into the queue first) from the longest queue (notice the customer he can get served now)
+		pthread_cond_broadcast(/* cond_var of the selected queue */); // Awake the customer (the one enter into the queue first) from the selected queue
 		
 		winner_selected[selected_queue_ID] = FALSE; // set the initial value as the customer has not selected from the queue.
 		
 		pthread_mutex_unlock(/* mutexLock of the selected queue */);
 		
-		pthread_cond_wait(/* convar of the current clerk */); // wait for the customer to finish its service, clerk busy
+		pthread_cond_wait(/* convar of the current clerk */); // wait for the customer to finish its service
 	}
 	
 	pthread_exit(NULL);
