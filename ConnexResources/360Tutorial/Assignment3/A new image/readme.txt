@@ -1,0 +1,2 @@
+Hi, considering that some students using the MAC system are not able to install winImage, I create an new image for you to test your program.
+You can find the basic information about this image from the pdf file. Good Luck!
