@@ -13,7 +13,8 @@ int main (int argc, char* argv[]) {
 	}
 
 	// open the disk
-	// Please remember to give write permission to your argv[1] (the image you want map) by using chmod (if it doest not have the write permission by default), otherwise you will fail the map.
+	// Please remember to give write permission to your argv[1] (the image you want map) 
+	// by using chmod (if it doest not have the write permission by default), otherwise you will fail the map.
 	int fd;
 	struct stat buf;
 
