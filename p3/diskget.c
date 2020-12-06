@@ -22,12 +22,16 @@ void copyFile(char* p, char* p2, char* fileName) {
 	
 	// first get the first logical cluster of the file we are searching for.
 	int firstLogicalCluster = get_first_logical_cluster(fileName, p + SECTOR_SIZE * 19);
+	
 	// we don't want to modify firstLogicalCluster so we copy value to new variable
 	int n = firstLogicalCluster;
+	
 	// get_file_size is located in p3help.c
 	int fileSize = get_file_size(fileName, p + SECTOR_SIZE * 19);
+	
 	// we don't want to modify bytesRemaining so we copy value to new variable
 	int bytesRemaining = fileSize;
+	
 	// the physical address conversion in the FAT spec
 	int physicalAddress = SECTOR_SIZE * (31 + n);
 

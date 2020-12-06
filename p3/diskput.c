@@ -1,6 +1,6 @@
 /*
 	University of Victoria - Fall 2020
-	CSC 360 Assignment 3 - Part I
+	CSC 360 Assignment 3 - Part IV
 	Steve Muir - V00347783
 */
 

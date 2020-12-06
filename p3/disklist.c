@@ -64,14 +64,19 @@ void print_directories(char *p) {
 		// the year is stored as a value since 1980
 		// the year is stored in the high seven bits
 		int year = ((p[17] & 0b11111110) >> 1) + 1980;
+		
 		//the month is stored in the middle four bits
 		int month = ((p[16] & 0b11100000) >> 5) + ((p[17] & 0b00000001) << 3);
+		
 		// the day is stored in the low five bits
 		int day = (p[16] & 0b00011111);
+		
 		// the hour is stored in the high five bits
 		int hour = ((p[15] & 0b11111000) >> 3);
+		
 		//the minutes are stored in the middle 6 bits
 		int minute = ((p[14] & 0b11100000) >> 5) + ((p[15] & 0b00000111) << 3);
+		
 		// get the file size
 		int fileSize;
 		if (file == 'D')
@@ -82,6 +87,7 @@ void print_directories(char *p) {
 		{
 			fileSize = get_file_size(fileName, p);
 		}
+		
 		// check the attribute bits (not hidden and not volume label) are not set
 		if ((p[11] & 0b00000010) == 0 && (p[11] & 0b00001000) == 0)
 		{
