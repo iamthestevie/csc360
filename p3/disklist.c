@@ -73,7 +73,12 @@ void print_directories(char *p) {
 		// check the attribute bits (subdirectory and unused) are not set
 		if ((p[11] & 0b00000010) == 0 && (p[11] & 0b00001000) == 0)
 		{
+			printf("==================\n");
 			printf("%c %10d %20s %d-%d-%d %03d:%02d\n", file, fileSize, fileName, year, month, day, hour, minute);
+		}
+		else if ((p[11] & 0b00001000) == 0b00001000)
+		{
+			printf("%d\n", fileName);
 		}
 
 		p += 32;
