@@ -21,8 +21,19 @@ void print_directories(char *p) {
 
 	while (p[0] != 0x00)
 	{
-		
-		// get the filename from the image
+		char file;
+		// check the attribute bits
+		// if the volume label bit is set then its of type directory 'D'
+		if ((p[11] & 0b00010000) == 0b00010000)
+		{
+			file = 'D';
+		}
+		// otherwise the file is of type file 'F'
+		else
+		{
+			file = 'F';
+		}
+		// next we want to get the filename from the image
 		char *fileName = malloc(sizeof(char));
 		int i;
 		for (i = 0; i < 8; i++)
@@ -34,29 +45,16 @@ void print_directories(char *p) {
 			fileName[i] = p[i];
 		}
 
-		char file;
-		// check the attribute bits
-		// if the volume label bit is set then its of type directory 'D'
-		if ((p[11] & 0b00010000) == 0b00010000)
+		// now we get the file extension
+		char *fileExtension = malloc(sizeof(char));
+		for (i = 0; i < 3; i++)
 		{
-			file = 'D';
-			printf("%s\n", fileName);
-			printf("==================\n");
+			fileExtension[i] = p[i + 8];
 		}
-		// otherwise the file is of type file 'F'
-		else
-		{
-			file = 'F';
-			// now we get the file extension
-			char *fileExtension = malloc(sizeof(char));
-			for (i = 0; i < 3; i++)
-			{
-				fileExtension[i] = p[i + 8];
-			}
-			// concatenate the filename and extension together
-			strcat(fileName, ".");
-			strcat(fileName, fileExtension);
-		}
+
+		// concatenate the filename and extension together
+		strcat(fileName, ".");
+		strcat(fileName, fileExtension);
 
 		// get time file creation data
 		// the year is stored as a value since 1980
@@ -72,7 +70,7 @@ void print_directories(char *p) {
 		int minute = ((p[14] & 0b11100000) >> 5) + ((p[15] & 0b00000111) << 3);
 		// get the file size
 		int fileSize = get_file_size(fileName, p);
-		// check the attribute bits (hidden, volume label) are not set
+		// check the attribute bits (subdirectory and unused) are not set
 		if ((p[11] & 0b00000010) == 0 && (p[11] & 0b00001000) == 0)
 		{
 			printf("%c %10d %20s %d-%d-%d %03d:%02d\n", file, fileSize, fileName, year, month, day, hour, minute);
