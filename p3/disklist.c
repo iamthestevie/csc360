@@ -40,7 +40,7 @@ void print_directories(char *p) {
 		if ((p[11] & 0b00010000) == 0b00010000)
 		{
 			file = 'D';
-			printf("%s\n", fileName)
+			printf("%s\n", fileName);
 			printf("==================\n");
 		}
 		// otherwise the file is of type file 'F'
