@@ -48,16 +48,17 @@ void print_directories(char *p) {
 		else
 		{
 			file = 'F';
-			// now we get the file extension
-			char *fileExtension = malloc(sizeof(char));
-			for (i = 0; i < 3; i++)
-			{
-				fileExtension[i] = p[i + 8];
-			}
-			// concatenate the filename and extension together
-			strcat(fileName, ".");
-			strcat(fileName, fileExtension);
 		}
+
+		// now we get the file extension
+		char *fileExtension = malloc(sizeof(char));
+		for (i = 0; i < 3; i++)
+		{
+			fileExtension[i] = p[i + 8];
+		}
+		// concatenate the filename and extension together
+		strcat(fileName, ".");
+		strcat(fileName, fileExtension);
 		
 		// get time file creation data
 		// the year is stored as a value since 1980
@@ -122,7 +123,7 @@ int main (int argc, char *argv[]) {
 		exit(1);
 	}
 
-	// List the contents of all directories in the disk image file system
+	// List the contents of directories in the disk image file system
 	print_directories(p + SECTOR_SIZE * 19);
 
 	// clean up
