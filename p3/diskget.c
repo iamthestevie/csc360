@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "p3help.h"
 
 // 	copy_file
