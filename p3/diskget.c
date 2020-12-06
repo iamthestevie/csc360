@@ -5,3 +5,8 @@
 */
 
 #include "p3help.h"
+
+int main () {
+
+	return 0;
+}
