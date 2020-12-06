@@ -38,7 +38,7 @@ void print_directories(char *p) {
 		int i;
 		for (i = 0; i < 8; i++)
 		{
-			if (p[i] = ' ')
+			if (p[i] == ' ')
 			{
 				break;
 			}
