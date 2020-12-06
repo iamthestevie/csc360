@@ -37,7 +37,7 @@ void copyFile(char* p, char* p2, char* fileName) {
 	} while (get_fat(n, p) != 0xFFF);
 }
 
-int main () {
+int main (int argc, char* argv[]) {
 
 	// check that input format is correct ./diskget '<file system image> <file name>'
 	if (argc < 3)
