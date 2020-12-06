@@ -21,7 +21,7 @@ void print_directories(char *p) {
 
 	printf("Root\n");
 	printf("==================\n");
-	
+
 	while (p[0] != 0x00)
 	{
 		// get the filename from the image
@@ -72,7 +72,15 @@ void print_directories(char *p) {
 		//the minutes are stored in the middle 6 bits
 		int minute = ((p[14] & 0b11100000) >> 5) + ((p[15] & 0b00000111) << 3);
 		// get the file size
-		int fileSize = get_file_size(fileName, p);
+		int fileSize;
+		if (file == 'D')
+		{
+			fileSize = 0;
+		}
+		else
+		{
+			fileSize = get_file_size(fileName, p);
+		}
 		// check the attribute bits (not hidden and not volume label) are not set
 		if ((p[11] & 0b00000010) == 0 && (p[11] & 0b00001000) == 0)
 		{
@@ -88,7 +96,7 @@ int main (int argc, char *argv[]) {
 	// check the input ./disklist '<file system image>'
 	if (argc < 2)
 	{
-		printf("Error: execute as follows ./diskinfo '<file system image>'\n");
+		printf("Error: execute as follows ./disklist '<file system image>'\n");
 		exit(1);
 	}
 
