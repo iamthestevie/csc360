@@ -77,7 +77,7 @@ void print_directories(char *p) {
 		}
 		else if ((p[11] & 0b00001000) == 0b00001000 || (p[11] & 0b00010000) == 0b00010000)
 		{
-			printf("%d\n", fileName);
+			printf("%s\n", fileName);
 			printf("==================\n");
 		}
 
