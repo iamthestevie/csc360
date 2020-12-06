@@ -58,6 +58,67 @@ void get_disk_label(char *diskLabel, char *p) {
 	}
 }
 
+// 	get_fat_sectors
+//	purpose: 	finds out how many sectors are in each FAT
+//	input: 		p - a pointer to the mapped memory	
+//	output:		int number of sectors per FAT
+int get_fat_sectors(char *p) {
+	return p[22] + (p[23] << 8);
+}
+
+// 	get_num_root_files
+//	purpose: 	finds the number of files in the root directory
+//	input: 		p - a pointer to the mapped memory	
+//	output:		returns an int amount of the files in the root directory
+int get_num_root_files(char *p) {
+
+	// advance p to the beginning of the root directory
+	p += SECTOR_SIZE * 19;
+	int count = 0;
+
+	while (p[0] != 0x00)
+	{
+		// check the attribute bits
+		// if not a volume label, subdir, nor unused
+		if ((p[11] & 0b00000010) == 0 && (p[11] & 0b00001000) == 0 && (p[11] & 0b00010000) == 0) 
+		{
+			count++;
+		}
+
+		p += 32;
+	}
+
+	return count;
+}
+
+// 	get_num_fats
+//	purpose: 	finds out how many FAT copies are on disk
+//	input: 		p - a pointer to the mapped memory	
+//	output:		int number of FAT copies
+int get_num_fats(char *p) {
+	
+	// byte 16 in the boot sector contains the number of FATs
+	return p[16];
+}
+
+// 	print_disk_info
+//	purpose: 	finds out how many sectors are in each FAT
+//	input: 		p - a pointer to the mapped memory	
+//	output:		int number of sectors per FAT
+void print_disk_info(char *osName, char *diskLabel, int diskSize, int freeSize, int numRootFiles, int numFats, int fatSectors) {
+	
+	printf("OS Name: %s\n", osName);
+	printf("Label of the disk: %s\n", diskLabel);
+	printf("Total size of the disk: %d bytes\n", diskSize);
+	printf("Free size of the disk: %d bytes\n", freeSize);
+	printf("\n==================\n");
+	printf("The number of files in the image: %d\n", numRootFiles);
+	printf("\n==================\n");
+	printf("Number of FAT copies: %d\n", numFats);
+	printf("Sectors per FAT: %d\n", fatSectors);
+
+}
+
 int main (int argc, char* argv[]) {
 	
 	// check that input format is correct ./diskinfo '<file system image>'
@@ -99,7 +160,23 @@ int main (int argc, char* argv[]) {
 	char *diskLabel = malloc(sizeof(char));
 	get_disk_label(diskLabel, p);
 
+	// disk size
+	int diskSize = get_total_disk_size(p);
 
+	// free space on disk
+	int freeSize = get_free_disk_size(diskSize, p);
+
+	// root directory files
+	int numRootFiles = get_num_root_files(p);
+
+	// number of FAT copies
+	int numFats = get_num_fats(p);
+
+	// sectors per FAT
+	int fatSectors = get_fat_sectors(p);
+
+	// print info
+	print_disk_info(osName, diskLabel, diskSize, freeSize, numRootFiles, numFats, fatSectors);
 
 	// clean up
 	munmap(p, buf.st_size);
