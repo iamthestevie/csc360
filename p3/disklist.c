@@ -75,7 +75,7 @@ void print_directories(char *p) {
 		{
 			printf("%c %10d %20s %d-%d-%d %03d:%02d\n", file, fileSize, fileName, year, month, day, hour, minute);
 		}
-		else if ((p[11] & 0b00001000) == 0b00001000 || (p[11] & 0b00010000) == 0b00010000)
+		else if ((p[11] & 0b00010000) == 0b00010000)
 		{
 			printf("%s\n", fileName);
 			printf("==================\n");
