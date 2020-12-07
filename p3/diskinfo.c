@@ -142,7 +142,7 @@ int main (int argc, char* argv[]) {
 		exit(1);
 	}
 
-	/// get the stat structure for the file and crete virtual mapping
+	// get the stat structure for the file and crete virtual mapping
 	fstat(fd, &buf);
 	char* p = mmap(NULL, buf.st_size, PROT_READ, MAP_SHARED, fd, 0);
 	if (p == MAP_FAILED)
