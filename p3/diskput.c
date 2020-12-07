@@ -13,52 +13,6 @@
 #include <sys/stat.h>
 #include "p3help.h"
 
-// 	copy_file
-//	purpose: 	copies a file from working directory to the disk image
-//	input: 		p - a pointer to the mapped memory
-//				p2 - a pointer to the file we wish to write to
-//				fileName - the name of the file to copy
-//				fileSize - the size of the file to copy in bytes
-//	output:		void
-void copy_file(char* p, char* p2, char* fileName, int fileSize) {
-	
-	// first we check if the file we wish to copy exists
-	if (!disk_contains_file(fileName, p + SECTOR_SIZE * 19)) 
-	{
-		// we don't want to modify bytesRemaining so we copy value to new variable
-		int bytesRemaining = fileSize;
-		
-		// get the next free index in the FAT
-		int current = next_free_fat_index(p);
-		
-		update_root_dir(fileName, fileSize, current, p);
-
-		while (bytesRemaining > 0) 
-		{
-			// the physical address conversion in the FAT spec
-			int physicalAddress = SECTOR_SIZE * (31 + current);
-			
-			int i;
-			for (i = 0; i < SECTOR_SIZE; i++) 
-			{
-				if (bytesRemaining == 0) 
-				{
-					set_fat_entry(current, 0xFFF, p);
-					return;
-				}
-				
-				p[i + physicalAddress] = p2[fileSize - bytesRemaining];
-				bytesRemaining--;
-			}
-			
-			set_fat_entry(current, 0x69, p);
-			int next = next_free_fat_index(p);
-			set_fat_entry(current, next, p);
-			current = next;
-		}
-	} 
-}
-
 // 	next_free_fat_index
 //	purpose: 	finds the next free sector in the FAT (0x00 equals free)
 //	input: 		p - a pointer to the mapped memory
@@ -189,6 +143,54 @@ void set_fat_entry(int n, int val, char* p) {
 		p[SECTOR_SIZE + (int)((3 * n) / 2) + 1] = (val >> 4) & 0xFF;
 	}
 }
+
+// 	copy_file
+//	purpose: 	copies a file from working directory to the disk image
+//	input: 		p - a pointer to the mapped memory
+//				p2 - a pointer to the file we wish to write to
+//				fileName - the name of the file to copy
+//				fileSize - the size of the file to copy in bytes
+//	output:		void
+void copy_file(char* p, char* p2, char* fileName, int fileSize) {
+	
+	// first we check if the file we wish to copy exists
+	if (!disk_contains_file(fileName, p + SECTOR_SIZE * 19)) 
+	{
+		// we don't want to modify bytesRemaining so we copy value to new variable
+		int bytesRemaining = fileSize;
+		
+		// get the next free index in the FAT
+		int current = next_free_fat_index(p);
+		
+		update_root_dir(fileName, fileSize, current, p);
+
+		while (bytesRemaining > 0) 
+		{
+			// the physical address conversion in the FAT spec
+			int physicalAddress = SECTOR_SIZE * (31 + current);
+			
+			int i;
+			for (i = 0; i < SECTOR_SIZE; i++) 
+			{
+				if (bytesRemaining == 0) 
+				{
+					set_fat_entry(current, 0xFFF, p);
+					return;
+				}
+				
+				p[i + physicalAddress] = p2[fileSize - bytesRemaining];
+				bytesRemaining--;
+			}
+			
+			set_fat_entry(current, 0x69, p);
+			int next = next_free_fat_index(p);
+			set_fat_entry(current, next, p);
+			current = next;
+		}
+	} 
+}
+
+
 
 int main (int argc, char *argv[]) {
 
