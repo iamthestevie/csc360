@@ -15,4 +15,11 @@ Instructions to build and run
 	4. diskput.c: 	execute ./diskput '<file system image> <path to file/filename>'
 			
 			for example:	./diskput disk.IMA /sudir1/subdir2/foo.txt
-				or :	./diskput disk.IMA foo.txt 	
+					or :		./diskput disk.IMA foo.txt 	
+
+Notes:
+
+1. 	There are problems with disklist.c and diskput.c in that I ran out of time to understand how to both list
+	subdirectories and copy a file into a subidrectory.
+
+2.	Thanks for all the time spent marking this semester. I'm sure a lot of effort goes into this.
