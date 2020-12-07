@@ -76,7 +76,7 @@ int getNextFreeFatIndex(char* p) {
 	p += SECTOR_SIZE;
 
 	int n = 2;
-	while (getFatEntry(n, p) != 0x000) {
+	while (get_fat(n, p) != 0x000) {
 		n++;
 	}
 
