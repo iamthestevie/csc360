@@ -18,7 +18,7 @@
 //				p2 - a pointer to the mapped file to write to
 //				fileName - the name of the file to copy
 //	output:		none.
-void copyFile(char* p, char* p2, char* fileName) {
+void copy_file(char* p, char* p2, char* fileName) {
 	
 	// first get the first logical cluster of the file we are searching for.
 	int firstLogicalCluster = get_first_logical_cluster(fileName, p + SECTOR_SIZE * 19);
@@ -132,7 +132,7 @@ int main (int argc, char* argv[]) {
 		}
 
 		// Copy file from disk image to local directory
-		copyFile(p, p2, argv[2]);
+		copy_file(p, p2, argv[2]);
 		munmap(p2, fileSize);
 		close(fd2);
 
